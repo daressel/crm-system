@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Token } from 'graphql';
+import { verifyToken } from 'src/utils/jwt';
 import { Repository } from 'typeorm';
-import { LoginInput, RegistrationInput, UserUpdateInput } from './dto';
+import {
+  GetTokenForRegistration,
+  LoginInput,
+  RegistrationInput,
+  UserUpdateInput,
+} from './dto';
 import { User } from './models/user.model';
 
 @Injectable()
@@ -18,11 +25,23 @@ export class UserMutations {
     return user;
   }
 
+  @Mutation(() => String)
+  async getRegistrationToken(@Args('input') input: GetTokenForRegistration) {
+    return;
+  }
+
   @Mutation(() => User)
   async registration(@Args('input') input: RegistrationInput) {
-    const createdUser = this.userRepository.create(input);
+    const { encryptedCode, token, verifyCode } = input;
+    const { email, firstName, lastName, password } =
+      verifyToken<GetTokenForRegistration>(token);
+
+    const createdUser = this.userRepository.create({
+      email,
+      firstName,
+      lastName,
+    });
     const savedUser = await this.userRepository.save(createdUser);
-    console.log(savedUser);
     return savedUser;
   }
 

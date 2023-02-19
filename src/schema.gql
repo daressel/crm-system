@@ -25,6 +25,7 @@ type Query {
 
 type Mutation {
   login(input: LoginInput!): User!
+  getRegistrationToken(input: GetTokenForRegistration!): String!
   registration(input: RegistrationInput!): User!
   updateUser(input: UserUpdateInput!): User!
 }
@@ -34,11 +35,17 @@ input LoginInput {
   password: String!
 }
 
-input RegistrationInput {
+input GetTokenForRegistration {
   email: String!
   firstName: String!
   lastName: String!
   password: String!
+}
+
+input RegistrationInput {
+  token: String!
+  encryptedCode: String!
+  verifyCode: String!
 }
 
 input UserUpdateInput {

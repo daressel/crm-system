@@ -3,9 +3,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './user/user.module';
+import { UsersModule } from './models/user/user.module';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -18,14 +19,17 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
         const { res, req } = ctx;
         return { req, res };
       },
+      cors: {
+        exposedHeaders: ['authorization'],
+      },
     }),
     TypeOrmModule.forRoot({
       keepConnectionAlive: true,
       type: 'postgres',
-      host: 'localhost',
-      port: 8000,
-      username: 'postgres',
-      password: 'postgres_password',
+      host: process.env.POSTGRES_HOST,
+      port: +process.env.POSTGRES_PORT || 8000,
+      username: process.env.POSTGRES_USERNAME || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'postgres',
       database: 'postgres',
       autoLoadEntities: true,
       synchronize: true,

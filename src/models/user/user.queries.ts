@@ -1,7 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, GqlExecutionContext } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CurrentUser } from 'src/decorators';
+import { CtxUser } from 'src/types/common';
+import { Me } from 'src/utils/decorators';
 import { Repository } from 'typeorm';
 import { User } from './models/user.model';
 
@@ -14,7 +15,9 @@ export class UserQueries {
 
   @Query(() => String, { nullable: true })
   @UseGuards()
-  async me(@CurrentUser() asd) {
+  async me(@Me() { id, role }: CtxUser) {
+    console.log(id);
+    // console.log(asd);
     return 'asdas';
     // return this.userRepository.findOneBy({email: 'asdasd'});
   }
