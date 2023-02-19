@@ -5,10 +5,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
 } from 'typeorm';
-import { UserIdentity } from './user.identity.model';
 
 @Entity()
 @ObjectType()
