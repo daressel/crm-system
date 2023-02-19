@@ -32,16 +32,16 @@ export class UserUpdateInput {
   @Field(() => ID)
   id: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsEmail()
   @IsOptional()
   email?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsOptional()
   firstName?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsOptional()
   lastName?: string;
 }

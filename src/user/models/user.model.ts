@@ -1,5 +1,11 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -19,21 +25,21 @@ export class User {
   @Field(() => String)
   email: string;
 
-  @Column()
-  @Field(() => String)
-  role: string;
+  @Column({ default: 'user' })
+  @Field(() => String, { nullable: true })
+  role?: string;
 
-  @Column('boolean')
+  @Column({ type: 'boolean', default: false })
   @Field(() => Boolean)
   isOnline: boolean;
-  @Column('boolean')
+  @Column({ type: 'boolean', default: false })
   @Field(() => Boolean)
   isActive: boolean;
 
-  @Column('date')
-  @Field(() => String)
+  @CreateDateColumn()
+  @Field(() => Date)
   createdAt: Date;
-  @Column('date')
-  @Field(() => String)
+  @UpdateDateColumn()
+  @Field(() => Date)
   updatedAt: Date;
 }

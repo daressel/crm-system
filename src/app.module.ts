@@ -14,6 +14,10 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
       debug: true,
       plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: (ctx) => {
+        const { res, req } = ctx;
+        return { req, res };
+      },
     }),
     TypeOrmModule.forRoot({
       keepConnectionAlive: true,
