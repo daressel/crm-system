@@ -1,4 +1,4 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
+import { InputType, Field, ID, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsOptional } from 'class-validator';
 
 @InputType()
@@ -21,9 +21,6 @@ export class GetTokenForRegistration {
 export class RegistrationInput {
   @Field(() => String)
   token: string;
-
-  @Field(() => String)
-  encryptedCode: string;
 
   @Field(() => String)
   verifyCode: string;

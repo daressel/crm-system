@@ -1,5 +1,5 @@
-import { Injectable, UseGuards } from '@nestjs/common';
-import { Resolver, Query, GqlExecutionContext } from '@nestjs/graphql';
+import { Injectable } from '@nestjs/common';
+import { Resolver, Query } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CtxUser } from 'src/types/common';
 import { Me } from 'src/utils/decorators';
@@ -14,7 +14,6 @@ export class UserQueries {
   ) {}
 
   @Query(() => String, { nullable: true })
-  @UseGuards()
   async me(@Me() { id, role }: CtxUser) {
     console.log(id);
     // console.log(asd);

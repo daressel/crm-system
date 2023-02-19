@@ -10,3 +10,11 @@ export interface UserRefreshToken {
   id: string;
   isRefresh: boolean;
 }
+
+export interface TokenForRegistration {
+  email: string;
+  encryptedCode: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}

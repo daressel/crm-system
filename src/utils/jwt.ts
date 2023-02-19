@@ -1,17 +1,19 @@
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { TokenError } from './error';
 
 /** Eg: 60(ms), "2 days", "10h", "7d" */
 type ExpiresInType = string | number;
 
 /** (payload: object, expiresIn: string | number(ms)) => string */
-export const getToken = <T extends { exp: any }>(
+export const getToken = <T extends object>(
   payload: T,
   expiresIn?: ExpiresInType,
 ) => {
+  //@ts-ignore
   delete payload.exp;
+
   return jwt.sign(payload, process.env.APP_SECRET, {
-    expiresIn: expiresIn,
+    ...(expiresIn ? { expiresIn } : {}),
   });
 };
 

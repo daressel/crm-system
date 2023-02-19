@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './models/user/user.module';
+import { UsersModule } from './models/User';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import * as dotenv from 'dotenv';
 dotenv.config();

@@ -44,7 +44,6 @@ input GetTokenForRegistration {
 
 input RegistrationInput {
   token: String!
-  encryptedCode: String!
   verifyCode: String!
 }
 
