@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 export interface UserAccessToken {
   id: string;
   role: string;
@@ -17,4 +19,9 @@ export interface TokenForRegistration {
   firstName: string;
   lastName: string;
   password: string;
+}
+
+export interface ReqRes {
+  res: Response;
+  req: Request;
 }

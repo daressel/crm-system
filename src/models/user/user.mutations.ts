@@ -1,8 +1,8 @@
 import * as crypto from 'crypto';
 import { Injectable } from '@nestjs/common';
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getToken, verifyToken } from 'src/utils/jwt';
+import { getToken, setAuthPairTokens, verifyToken } from 'src/utils/jwt';
 import { Repository } from 'typeorm';
 import { UserIdentity } from './models/user.identity.model';
 import {
@@ -12,9 +12,10 @@ import {
   UserUpdateInput,
 } from './dto';
 import { User } from './models/user.model';
-import { TokenForRegistration } from 'src/types/common';
+import { TokenForRegistration, UserRefreshToken } from 'src/types/common';
 import { compareBcrypt, hashBcrypt } from 'src/utils/bcrypt';
-import { VerifyCodeIsNotCorrect } from './user.errors';
+import { InvalidPassword, VerifyCodeIsNotCorrect } from './user.errors';
+import { TokenError } from 'src/utils/error';
 
 @Injectable()
 @Resolver(() => User)
@@ -26,8 +27,24 @@ export class UserMutations {
   ) {}
 
   @Mutation(() => User)
-  async login(@Args('input') input: LoginInput) {
-    const user = await this.userRepository.findOneBy({ email: input.email });
+  async login(
+    @Context() context,
+    @Args('input') input: LoginInput,
+  ): Promise<User> {
+    const { email, password } = input;
+    const user = await this.userRepository.findOneBy({ email });
+    const userIdentity = await this.userIdentityRepository.findOne({
+      where: { user },
+      select: { password: true },
+    });
+
+    const isValidPassword = await compareBcrypt(
+      password,
+      userIdentity.password,
+    );
+    if (!isValidPassword) throw InvalidPassword;
+
+    setAuthPairTokens(user, context);
     return user;
   }
 
@@ -77,5 +94,23 @@ export class UserMutations {
       ...input,
     });
     return this.userRepository.save(updatedUser);
+  }
+
+  @Mutation(() => User)
+  async refresh(@Context() context): Promise<User> {
+    const { id, isRefresh } = verifyToken<UserRefreshToken>(
+      context.res.headers.get('Authorization'),
+    );
+    if (!isRefresh) {
+      throw TokenError;
+    }
+
+    const user = await this.userRepository.findOne({
+      where: { id },
+      select: { id: true, role: true },
+    });
+
+    setAuthPairTokens(user, context);
+    return user;
   }
 }

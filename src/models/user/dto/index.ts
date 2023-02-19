@@ -54,3 +54,17 @@ export class UserUpdateInput {
   @IsOptional()
   lastName?: string;
 }
+
+@InputType()
+export class Refresh {
+  @Field(() => String)
+  refresh: string;
+}
+
+@ObjectType()
+export class AuthPairTokens {
+  @Field(() => String)
+  accessToken: string;
+  @Field(() => String)
+  refreshToken: string;
+}

@@ -20,7 +20,7 @@ dotenv.config();
         return { req, res };
       },
       cors: {
-        exposedHeaders: ['authorization'],
+        exposedHeaders: ['Authorization', 'access-token', 'refresh-token'],
       },
     }),
     TypeOrmModule.forRoot({

@@ -21,6 +21,7 @@ scalar DateTime
 
 type Query {
   me: String
+  test: String
 }
 
 type Mutation {
@@ -28,6 +29,7 @@ type Mutation {
   getRegistrationToken(input: GetTokenForRegistration!): String!
   registration(input: RegistrationInput!): User!
   updateUser(input: UserUpdateInput!): User!
+  refresh: User!
 }
 
 input LoginInput {

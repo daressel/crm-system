@@ -1,4 +1,6 @@
 import * as jwt from 'jsonwebtoken';
+import { User } from 'src/models/User/models/user.model';
+import { ReqRes, UserAccessToken, UserRefreshToken } from 'src/types/common';
 import { TokenError } from './error';
 
 /** Eg: 60(ms), "2 days", "10h", "7d" */
@@ -33,4 +35,25 @@ export const decodeToken = <T extends object>(token: string): T => {
   } catch (e) {
     throw TokenError;
   }
+};
+
+export const setAuthPairTokens = (user: User, context: ReqRes): void => {
+  const accessToken = getToken<UserAccessToken>(
+    {
+      id: user.id,
+      role: user.role,
+      isAccess: true,
+    },
+    '1h',
+  );
+  const refreshToken = getToken<UserRefreshToken>(
+    {
+      id: user.id,
+      isRefresh: true,
+    },
+    '5d',
+  );
+
+  context.res.setHeader('access-token', accessToken);
+  context.res.setHeader('refresh-token', refreshToken);
 };
