@@ -1,10 +1,12 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ProductHistory } from 'src/models/Product/models/productHiistory.model';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -32,9 +34,13 @@ export class User {
   @Column({ type: 'boolean', default: false })
   @Field(() => Boolean)
   isOnline: boolean;
+
   @Column({ type: 'boolean', default: false })
   @Field(() => Boolean)
   isActive: boolean;
+
+  @OneToMany(() => ProductHistory, (historyProduct) => historyProduct.actionBy)
+  historyProducts: ProductHistory[];
 
   @CreateDateColumn()
   @Field(() => Date)

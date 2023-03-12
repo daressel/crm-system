@@ -3,7 +3,7 @@ import { CtxUser, ReqRes, UserAccessToken } from 'src/types/common';
 import { AuthTokenError } from './error';
 import { verifyToken } from './jwt';
 
-export const Me = createParamDecorator((_, payload): CtxUser => {
+export const Me = createParamDecorator<CtxUser>((_, payload): CtxUser => {
   try {
     const [__, ___, ctx, ____] = payload.args;
     const context = ctx as ReqRes;

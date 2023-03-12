@@ -19,6 +19,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Product {
+  id: ID!
+  title: ID!
+  price: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   me: String
   test: String
@@ -30,6 +38,9 @@ type Mutation {
   registration(input: RegistrationInput!): User!
   updateUser(input: UserUpdateInput!): User!
   refresh: User!
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(where: UniqueInput!, input: UpdateProductInput!): Product!
+  deleteProduct(where: UniqueInput!): Product!
 }
 
 input LoginInput {
@@ -54,4 +65,18 @@ input UserUpdateInput {
   email: String
   firstName: String
   lastName: String
+}
+
+input CreateProductInput {
+  title: String!
+  price: Int!
+}
+
+input UniqueInput {
+  id: ID!
+}
+
+input UpdateProductInput {
+  title: String
+  price: Int
 }

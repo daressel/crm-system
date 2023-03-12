@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './models/User';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import * as dotenv from 'dotenv';
+import { ProductsModule } from './models/Product';
 dotenv.config();
 @Module({
   imports: [
@@ -35,6 +36,7 @@ dotenv.config();
       synchronize: true,
     }),
     UsersModule,
+    ProductsModule,
   ],
 })
 export class AppModule {}
