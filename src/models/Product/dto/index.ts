@@ -34,11 +34,14 @@ export class Products {
   count?: number;
 }
 
-@ObjectType()
-export class ProductsOrderByInput {
-  @Field(() => [Product])
-  items: Product[];
+@InputType()
+export class ProductsWhereInput {
+  @Field(() => String, { nullable: true })
+  id?: string;
+
+  @Field(() => String, { nullable: true })
+  title?: string;
 
   @Field(() => Int, { nullable: true })
-  count?: number;
+  price?: number;
 }

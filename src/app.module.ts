@@ -15,7 +15,7 @@ dotenv.config();
       playground: false,
       debug: true,
       plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
       context: (ctx) => {
         const { res, req } = ctx;
         return { req, res };

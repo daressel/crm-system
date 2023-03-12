@@ -18,7 +18,9 @@ export class ProductMutations {
   ) {}
 
   @Mutation(() => Product)
-  async createProduct(@Args('input') input: CreateProductInput) {
+  async createProduct(
+    @Args('input') input: CreateProductInput,
+  ): Promise<Product> {
     const newProduct = this.productRepository.create(input);
     const createdNewProduct = await this.productRepository.save(newProduct);
     return createdNewProduct;
@@ -28,7 +30,7 @@ export class ProductMutations {
   async updateProduct(
     @Args('where') where: UniqueInput,
     @Args('input') input: UpdateProductInput,
-  ) {
+  ): Promise<Product> {
     const updatedProduct = await this.productRepository.save({
       id: where.id,
       ...input,
@@ -37,7 +39,7 @@ export class ProductMutations {
   }
 
   @Mutation(() => Product)
-  async deleteProduct(@Args('where') where: UniqueInput) {
+  async deleteProduct(@Args('where') where: UniqueInput): Promise<Product> {
     const deletedProduct = await this.productRepository.findOneBy({
       id: where.id,
     });

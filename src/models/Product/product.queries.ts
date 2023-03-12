@@ -3,10 +3,10 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationInput, UniqueInput } from 'src/graphqlTypes';
 import { Repository } from 'typeorm';
-import { Products } from './dto';
+import { Products, ProductsWhereInput } from './dto';
 import { Product } from './models/product.model';
 
-@Resolver(Product)
+@Resolver(() => Product)
 @Injectable()
 export class ProductQueries {
   constructor(
@@ -15,15 +15,17 @@ export class ProductQueries {
   ) {}
 
   @Query(() => Product, { nullable: true })
-  async product(@Args('where') where: UniqueInput) {
+  async product(@Args('where') where: UniqueInput): Promise<Product> {
     const product = await this.productRepository.findOneBy({ id: where.id });
     return product;
   }
 
   @Query(() => Products, { nullable: true })
   async products(
-    @Args('where') where: UniqueInput,
-    @Args('pagination') pagination: PaginationInput,
+    @Args({ name: 'where', type: () => [ProductsWhereInput], nullable: true })
+    where: ProductsWhereInput[],
+    @Args({ name: 'pagination', type: () => PaginationInput, nullable: true })
+    pagination: PaginationInput,
   ): Promise<Products> {
     const products = await this.productRepository.find({
       where,

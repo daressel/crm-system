@@ -27,9 +27,31 @@ type Product {
   updatedAt: DateTime!
 }
 
+type Products {
+  items: [Product!]!
+  count: Int
+}
+
 type Query {
   me: String
   test: String
+  product(where: UniqueInput!): Product
+  products(where: [ProductsWhereInput!], pagination: PaginationInput): Products
+}
+
+input UniqueInput {
+  id: ID!
+}
+
+input ProductsWhereInput {
+  id: String
+  title: String
+  price: Int
+}
+
+input PaginationInput {
+  take: Int
+  skip: Int
 }
 
 type Mutation {
@@ -70,10 +92,6 @@ input UserUpdateInput {
 input CreateProductInput {
   title: String!
   price: Int!
-}
-
-input UniqueInput {
-  id: ID!
 }
 
 input UpdateProductInput {
