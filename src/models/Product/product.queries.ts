@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { PaginationInput, UniqueInput } from 'src/graphqlTypes';
 import { Repository } from 'typeorm';
 import { Products, ProductsWhereInput } from './dto';
 import { Product } from './models/product.model';
 
-@Resolver(() => Product)
 @Injectable()
+@Resolver(() => Product)
 export class ProductQueries {
   constructor(
     @InjectRepository(Product)
@@ -20,6 +21,7 @@ export class ProductQueries {
     return product;
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => Products, { nullable: true })
   async products(
     @Args({ name: 'where', type: () => [ProductsWhereInput], nullable: true })

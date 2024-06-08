@@ -6,8 +6,8 @@ import { Me } from 'src/utils/decorators';
 import { Repository } from 'typeorm';
 import { User } from './models/user.model';
 
-@Resolver(() => User)
 @Injectable()
+@Resolver(() => User)
 export class UserQueries {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,

@@ -16,10 +16,6 @@ dotenv.config();
       debug: true,
       plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
-      context: (ctx) => {
-        const { res, req } = ctx;
-        return { req, res };
-      },
       cors: {
         exposedHeaders: ['Authorization', 'access-token', 'refresh-token'],
       },
